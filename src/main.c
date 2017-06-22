@@ -2,12 +2,13 @@
 #include "stm32f10x.h"
 #include <stdio.h>
 
-#define RXBUFFERSIZE 1024
+#define RXBUFFERSIZE 24
 
 uint8_t RXBuffer0[RXBUFFERSIZE];
 uint8_t RXBuffer1[RXBUFFERSIZE];
 
 uint8_t using_buf0 = 1;
+uint8_t recv_flag = 0;
 
 void RCC_Configuration(void)
 {
@@ -103,30 +104,6 @@ void USART_GPS_init()
   USART_DMACmd(USART1, USART_DMAReq_Rx, ENABLE);
   DMA_Cmd(DMA1_Channel5, ENABLE);
   USART_Cmd(USART1, ENABLE);
-  
-//  while(1)
-//  {
-//    uint16_t tmp = 0xff;;
-//    static uint16_t i = 0;
-//    while(USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == RESET)
-//    {
-//    }
-//    USART_ClearFlag(USART1,USART_IT_RXNE);
-//    tmp = USART_ReceiveData(USART1);
-//    RXBuffer0[i++] = tmp;
-////    printf("%x\n", tmp);
-//    if(i == 1024)
-//      i = 0;
-//    
-////    USART_SendData(USART1, tmp);
-////    
-////    /* Loop until USARTy DR register is empty */ 
-////    while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)
-////    {
-////    }
-//  }
-  
-  
 }
 
 int main(void)
@@ -162,6 +139,25 @@ int main(void)
 //      flagChange = using_buf0;
 //    }
     
+    if(recv_flag == 1)
+    {
+      uint8_t *buf = NULL;
+      uint32_t i = 0;
+      
+      recv_flag = 0;
+      if(using_buf0 == 1)
+        buf = RXBuffer1;
+      else
+        buf = RXBuffer0;
+      
+      for(i=0; i<RXBUFFERSIZE; i++)
+      {
+        USART_SendData(USART1,buf[i]);
+        while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET){}
+      }
+      
+    }
+    
   }
 }
 
@@ -179,6 +175,8 @@ void DMA1_Channel5_IRQHandler(void)
       DMA1_Channel5->CMAR = (uint32_t)RXBuffer1;
       using_buf0 = 0;
     }
+    
+    recv_flag = 1;
     
     DMA_ClearITPendingBit(DMA1_IT_TC5);
   }
