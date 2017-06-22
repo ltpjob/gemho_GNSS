@@ -38,7 +38,7 @@
         <expressions>
           
           
-        <item>RXBuffer0</item><item>RXBuffer1</item><item>flag</item><item>using_buf0</item><item>flagChange</item><item></item></expressions>
+        <item>RXBuffer0</item><item>RXBuffer1</item><item>flag</item><item>using_buf0</item><item>flagChange</item><item/></expressions>
         <col-names>
           
           
