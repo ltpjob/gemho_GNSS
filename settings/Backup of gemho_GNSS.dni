@@ -16,9 +16,6 @@ Manual=0
 Ddf=1
 TypeViol=0
 Stop=1
-[Trace1]
-Enabled=0
-ShowSource=1
 [Simulator]
 Freq=10000000
 MultiCoreRunAll=1
@@ -28,7 +25,7 @@ LeaveTargetRunning=_ 0
 stlinkserialNo=29362087
 stlinkfoundProbes=
 [DebugChecksum]
-Checksum=-1551416872
+Checksum=-1579680855
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -43,8 +40,8 @@ OverrideDefaultClocks=0
 CpuClock=72000000
 ClockAutoDetect=0
 ClockWanted=2000000
-JtagSpeed=2000000
-Prescaler=36
+JtagSpeed=2250000
+Prescaler=32
 TimeStampPrescIndex=0
 TimeStampPrescData=0
 PcSampCYCTAP=1
@@ -55,6 +52,17 @@ ITMportsEnable=0
 ITMportsTermIO=0
 ITMportsLogFile=0
 ITMlogFile=$PROJ_DIR$\ITM.log
+[JLinkDriver]
+CStepIntDis=_ 0
+LeaveTargetRunning=_ 0
+TraceBufferSize=0x00010000
+TraceStallIfFIFOFull=0x00000000
+TracePortSize=0x00000000
+[RecentFlashDownload]
+Path=D:\project\stm32_test\Debug\Exe\Template.out
+[Trace1]
+Enabled=0
+ShowSource=1
 [Trace2]
 Enabled=0
 ShowSource=0
@@ -67,6 +75,14 @@ EventEXC=0
 EventFOLD=0
 EventLSU=0
 EventSLEEP=0
+[PowerLog]
+Title_0=I0
+Symbol_0=0 4 0
+LogEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+LiveEnabled=0
+LiveFile=PowerLogLive.log
 [DataLog]
 LogEnabled=0
 GraphEnabled=0
@@ -112,6 +128,10 @@ Exclusions=
 Enabled=0
 [CallStackStripe]
 ShowTiming=1
+[PowerProbe]
+Frequency=10000
+Probe0=I0
+ProbeSetup0=2 1 1 2 0 0
 [Disassemble mode]
 mode=0
 [Breakpoints2]
