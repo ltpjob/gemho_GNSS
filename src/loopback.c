@@ -50,7 +50,7 @@ int32_t loopback_tcps(uint8_t sn, uint8_t* buf, uint16_t port)
          break;
       case SOCK_CLOSE_WAIT :
 #ifdef _LOOPBACK_DEBUG_
-         //printf("%d:CloseWait\r\n",sn);
+         printf("%d:CloseWait\r\n",sn);
 #endif
          if((ret = disconnect(sn)) != SOCK_OK) return ret;
 #ifdef _LOOPBACK_DEBUG_
@@ -65,11 +65,11 @@ int32_t loopback_tcps(uint8_t sn, uint8_t* buf, uint16_t port)
          break;
       case SOCK_CLOSED:
 #ifdef _LOOPBACK_DEBUG_
-         //printf("%d:TCP server loopback start\r\n",sn);
+         printf("%d:TCP server loopback start\r\n",sn);
 #endif
          if((ret = socket(sn, Sn_MR_TCP, port, 0x00)) != sn) return ret;
 #ifdef _LOOPBACK_DEBUG_
-         //printf("%d:Socket opened\r\n",sn);
+         printf("%d:Socket opened\r\n",sn);
 #endif
          break;
       default:
@@ -134,7 +134,7 @@ int32_t loopback_tcpc(uint8_t sn, uint8_t* buf, uint8_t* destip, uint16_t destpo
 
       case SOCK_CLOSE_WAIT :
 #ifdef _LOOPBACK_DEBUG_
-         //printf("%d:CloseWait\r\n",sn);
+         printf("%d:CloseWait\r\n",sn);
 #endif
          if((ret=disconnect(sn)) != SOCK_OK) return ret;
 #ifdef _LOOPBACK_DEBUG_
@@ -153,8 +153,8 @@ int32_t loopback_tcpc(uint8_t sn, uint8_t* buf, uint8_t* destip, uint16_t destpo
     	  close(sn);
     	  if((ret=socket(sn, Sn_MR_TCP, any_port++, 0x00)) != sn) return ret; // TCP socket open with 'any_port' port number
 #ifdef _LOOPBACK_DEBUG_
-    	 //printf("%d:TCP client loopback start\r\n",sn);
-         //printf("%d:Socket opened\r\n",sn);
+    	 printf("%d:TCP client loopback start\r\n",sn);
+         printf("%d:Socket opened\r\n",sn);
 #endif
          break;
       default:
@@ -203,7 +203,7 @@ int32_t loopback_udps(uint8_t sn, uint8_t* buf, uint16_t port)
          break;
       case SOCK_CLOSED:
 #ifdef _LOOPBACK_DEBUG_
-         //printf("%d:UDP loopback start\r\n",sn);
+         printf("%d:UDP loopback start\r\n",sn);
 #endif
          if((ret = socket(sn, Sn_MR_UDP, port, 0x00)) != sn)
             return ret;

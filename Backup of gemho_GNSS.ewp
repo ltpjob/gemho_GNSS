@@ -2015,6 +2015,9 @@
   <group>
     <name>User</name>
     <file>
+      <name>$PROJ_DIR$\inc\gemho_GNSS.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\src\loopback.c</name>
     </file>
     <file>
@@ -2022,6 +2025,9 @@
     </file>
     <file>
       <name>$PROJ_DIR$\src\main.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\net_service.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\src\spi.c</name>

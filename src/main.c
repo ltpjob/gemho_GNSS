@@ -5,22 +5,35 @@
 #include "wizchip_conf.h"
 #include "socket.h"
 #include "loopback.h"
+#include "gemho_GNSS.h"
+#include "net_service.h"
 
-#define RXBUFFERSIZE 2048
+
 
 uint8_t RXBuffer0[RXBUFFERSIZE];
 uint8_t RXBuffer1[RXBUFFERSIZE];
-uint8_t netBuffer[RXBUFFERSIZE];
 
-uint8_t using_buf0 = 1;
-uint8_t recv_flag = 0;
+//uint8_t GPSInitCmd[] = {0xB5, 0x62, 0x06, 0x3E, 0x0C, 0x00, 0x00, 0x20, 0x20, 0x01, 0x00, 0x0A, 0x20, 0x00, 0x01, 0x00, 0x00, 0x00, 0xBC, 0x5D, 
+//                        0xB5, 0x62, 0x06, 0x3E, 0x0C, 0x00, 0x00, 0x20, 0x20, 0x01, 0x06, 0x08, 0x10, 0x00, 0x01, 0x00, 0x00, 0x00, 0xB0, 0x1F, 
+//                        0xB5, 0x62, 0x06, 0x01, 0x08, 0x00, 0x03, 0x0F, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x23, 0x2C, 
+//                        0xB5, 0x62, 0x06, 0x01, 0x08, 0x00, 0x03, 0x10, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x24, 0x33, 
+//                        0xB5, 0x62, 0x06, 0x01, 0x08, 0x00, 0x01, 0x20, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x32, 0x93};
 
-wiz_NetInfo gWIZNETINFO = { .mac = {0x00, 0x08, 0xdc,0x00, 0xab, 0xcd},
-                             .ip = {192, 168, 88, 5},
-                             .sn = {255,255,255,0},
-                             .gw = {192, 168, 88, 1},
-                             .dns = {0,0,0,0},
-                             .dhcp = NETINFO_STATIC };
+
+uint8_t GPSInitCmd[] = {0xB5, 0x62, 0x06, 0x3E, 0x0C, 0x00, 0x00, 0x20, 0x20, 0x01, 0x03, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0xB4, 0x3B, 
+                        0xB5, 0x62, 0x06, 0x3E, 0x0C, 0x00, 0x00, 0x20, 0x20, 0x01, 0x06, 0x10, 0x10, 0x00, 0x01, 0x00, 0x00, 0x00, 0xB8, 0x57, 
+                        0xB5, 0x62, 0x06, 0x01, 0x08, 0x00, 0x02, 0x15, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x27, 0x49, 
+                        0xB5, 0x62, 0x06, 0x01, 0x08, 0x00, 0x02, 0x13, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x25, 0x3B};
+
+__IO uint8_t g_using_buf0 = 1;
+__IO uint8_t g_recv_flag = 0;
+
+wiz_NetInfo WIZNETINFO = {.mac = {0x00, 0x08, 0xdc,0x00, 0xab, 0xcd},
+                          .ip = {192, 168, 88, 5},
+                          .sn = {255,255,255,0},
+                          .gw = {192, 168, 88, 1},
+                          .dns = {0,0,0,0},
+                          .dhcp = NETINFO_STATIC };
 
 int fputc(int ch, FILE *f)
 {
@@ -30,9 +43,9 @@ int fputc(int ch, FILE *f)
 
 void RCC_Configuration(void)
 {
-    /* DMA clock enable */
+  /* DMA clock enable */
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
-
+  
   /* Enable GPIO clock */
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB |RCC_APB2Periph_USART1 | RCC_APB2Periph_AFIO, ENABLE);
   
@@ -44,7 +57,7 @@ void RCC_Configuration(void)
 void GPIO_Configuration(void)
 {
   GPIO_InitTypeDef GPIO_InitStructure;
-    
+  
   //usart1
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
@@ -81,9 +94,9 @@ void GPIO_Configuration(void)
 void NVIC_Configuration(void)
 {
   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_3);
-
+  
   NVIC_InitTypeDef NVIC_InitStructure;
-
+  
   NVIC_InitStructure.NVIC_IRQChannel = DMA1_Channel5_IRQn;   
   NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2; 
   NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
@@ -94,7 +107,7 @@ void NVIC_Configuration(void)
 void DMA_Configuration(void)
 {
   DMA_InitTypeDef DMA_InitStructure;
-
+  
   /* USARTy TX DMA1 Channel (triggered by USARTy Tx event) Config */
   DMA_DeInit(DMA1_Channel5);  
   DMA_Cmd(DMA1_Channel5, DISABLE); 
@@ -131,9 +144,20 @@ void USART_GPS_init()
 
 void USART_GSP_start()
 {
+  int i = 0;
+  
   USART_DMACmd(USART1, USART_DMAReq_Rx, ENABLE);
   DMA_Cmd(DMA1_Channel5, ENABLE);
   USART_Cmd(USART1, ENABLE);
+  
+  
+  while(g_recv_flag == 0);
+  for(i=0; i<sizeof(GPSInitCmd); i++)
+  {
+    USART_SendData(USART1,GPSInitCmd[i]);
+    while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET){}
+  }
+  
 }
 
 void W5500_config()
@@ -161,27 +185,13 @@ void W5500_config()
   SPI_start();
 }
 
-void network_init(void)
+void tick_ms_init()
 {
-  uint8_t tmpstr[6];
-  ctlnetwork(CN_SET_NETINFO, (void*)&gWIZNETINFO);
-  ctlnetwork(CN_GET_NETINFO, (void*)&gWIZNETINFO);
-  
-  // Display Network Information
-  ctlwizchip(CW_GET_ID,(void*)tmpstr);
-  printf("\r\n=== %s NET CONF ===\r\n",(char*)tmpstr);
-  printf("MAC: %02X:%02X:%02X:%02X:%02X:%02X\r\n",gWIZNETINFO.mac[0],gWIZNETINFO.mac[1],gWIZNETINFO.mac[2],
-         gWIZNETINFO.mac[3],gWIZNETINFO.mac[4],gWIZNETINFO.mac[5]);
-  printf("SIP: %d.%d.%d.%d\r\n", gWIZNETINFO.ip[0],gWIZNETINFO.ip[1],gWIZNETINFO.ip[2],gWIZNETINFO.ip[3]);
-  printf("GAR: %d.%d.%d.%d\r\n", gWIZNETINFO.gw[0],gWIZNETINFO.gw[1],gWIZNETINFO.gw[2],gWIZNETINFO.gw[3]);
-  printf("SUB: %d.%d.%d.%d\r\n", gWIZNETINFO.sn[0],gWIZNETINFO.sn[1],gWIZNETINFO.sn[2],gWIZNETINFO.sn[3]);
-  printf("DNS: %d.%d.%d.%d\r\n", gWIZNETINFO.dns[0],gWIZNETINFO.dns[1],gWIZNETINFO.dns[2],gWIZNETINFO.dns[3]);
-  printf("======================\r\n");
-}
-
-void W5500_start()
-{
-//  while(1);
+  if (SysTick_Config(SystemCoreClock / 1000))
+  { 
+    /* Capture error */ 
+    while (1);
+  }
 }
 
 int main(void)
@@ -194,76 +204,45 @@ int main(void)
   DMA_Configuration();
   USART_GPS_init();
   USART_GSP_start();
-  
   W5500_config();
   
-  network_init();
+  network_init(&WIZNETINFO);
+  
+  tick_ms_init();
   
   while(1)
   {
-    loopback_tcps(0, netBuffer, 5566);
-    
-      
-    
-//    static uint8_t flagChange = 0;
-//    
-//    if(flagChange != using_buf0)
-//    {
-//      uint32_t count = sizeof(RXBuffer0);
-//      int i = 0;
-//      uint8_t *buf = NULL;
-//      
-//      if(using_buf0 == 1)
-//        buf = RXBuffer1;
-//      else
-//        buf = RXBuffer0;
-//        
-//      for(i=0; i<count; i++)
-//      {
-//        printf("%c", buf[i]);
-//      }
-//      
-//      flagChange = using_buf0;
-//    }
-    
-//    if(recv_flag == 1)
-//    {
-//      uint8_t *buf = NULL;
-//      uint32_t i = 0;
-//      
-//      recv_flag = 0;
-//      if(using_buf0 == 1)
-//        buf = RXBuffer1;
-//      else
-//        buf = RXBuffer0;
-//      
-//      for(i=0; i<RXBUFFERSIZE; i++)
-//      {
-//        USART_SendData(USART1,buf[i]);
-//        while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET){}
-//      }
-//      
-//    }
+    net_service();
     
   }
+}
+
+/**
+  * @brief  This function handles SysTick Handler.
+  * @param  None
+  * @retval None
+  */
+void SysTick_Handler(void)
+{
+  network_aliveTick();
 }
 
 void DMA1_Channel5_IRQHandler(void)
 {
   if(DMA_GetITStatus(DMA1_FLAG_TC5))
   {
-    if(using_buf0 ==0)
+    if(g_using_buf0 ==0)
     {
       DMA1_Channel5->CMAR = (uint32_t)RXBuffer0;
-      using_buf0 = 1;
+      g_using_buf0 = 1;
     }
     else
     {
       DMA1_Channel5->CMAR = (uint32_t)RXBuffer1;
-      using_buf0 = 0;
+      g_using_buf0 = 0;
     }
     
-    recv_flag = 1;
+    g_recv_flag++;
     
     DMA_ClearITPendingBit(DMA1_IT_TC5);
   }
