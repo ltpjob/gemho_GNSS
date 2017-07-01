@@ -57,9 +57,13 @@ int32_t net_service()
   uint16_t port = 5566;
   uint8_t *pData = NULL;
   upComDataHead head;
-  uint32_t cpuid = SCB->CPUID;
+  uint32_t cpuid[3];
   uint8_t buffer[128] = "";
   
+  
+  cpuid[0]=*(vu32*)(0x1ffff7e8);
+  cpuid[1]=*(vu32*)(0x1ffff7ec);
+  cpuid[2]=*(vu32*)(0x1ffff7f0);
   
 #ifdef _NETSERVICE_DEBUG_
   uint8_t destip[4];

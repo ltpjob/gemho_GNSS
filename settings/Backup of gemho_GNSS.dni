@@ -25,7 +25,7 @@ LeaveTargetRunning=_ 0
 stlinkserialNo=29362087
 stlinkfoundProbes=
 [DebugChecksum]
-Checksum=674045846
+Checksum=379490247
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -60,6 +60,8 @@ TraceStallIfFIFOFull=0x00000000
 TracePortSize=0x00000000
 [RecentFlashDownload]
 Path=D:\project\stm32_test\Debug\Exe\Template.out
+[array_types]
+Fmt0=uint32_t[3]	4	0
 [Trace1]
 Enabled=0
 ShowSource=1
