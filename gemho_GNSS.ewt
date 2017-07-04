@@ -2406,7 +2406,16 @@
             <name>$PROJ_DIR$\src\main.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\src\net_service.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\spi.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\inc\stm32f10x_conf.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\stm32f10x_it.c</name>
         </file>
     </group>
     <group>

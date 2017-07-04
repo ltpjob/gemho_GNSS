@@ -39,7 +39,7 @@
         <stlinkResetStrategy>1</stlinkResetStrategy>
     </StLinkDriver>
     <DebugChecksum>
-        <Checksum>2710336364</Checksum>
+        <Checksum>1407249761</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -123,6 +123,9 @@
         <LoggingEnabled>_ 0</LoggingEnabled>
         <LogFile>_ ""</LogFile>
     </TermIOLog>
+    <Disassembly>
+        <MixedMode>1</MixedMode>
+    </Disassembly>
     <DriverProfiling>
         <Enabled>0</Enabled>
         <Mode>3</Mode>
