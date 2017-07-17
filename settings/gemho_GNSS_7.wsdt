@@ -18,13 +18,13 @@
           
           
           
-        <Column0>260</Column0><Column1>21</Column1><Column2>27</Column2><Column3>0</Column3></ColumnWidths>
+        <Column0>311</Column0><Column1>21</Column1><Column2>27</Column2><Column3>0</Column3></ColumnWidths>
       </Workspace>
       <Debug-Log>
         
         
       <ColumnWidth0>20</ColumnWidth0><ColumnWidth1>1157</ColumnWidth1></Debug-Log>
-    <Select-Ambiguous-Definitions><ColumnWidth0>464</ColumnWidth0><ColumnWidth1>66</ColumnWidth1><ColumnWidth2>796</ColumnWidth2></Select-Ambiguous-Definitions><TerminalIO/></Static>
+    <Select-Ambiguous-Definitions><ColumnWidth0>464</ColumnWidth0><ColumnWidth1>66</ColumnWidth1><ColumnWidth2>796</ColumnWidth2></Select-Ambiguous-Definitions><TerminalIO/><Find-in-Files><ColumnWidth0>491</ColumnWidth0><ColumnWidth1>81</ColumnWidth1><ColumnWidth2>737</ColumnWidth2><ColumnWidth3>327</ColumnWidth3></Find-in-Files></Static>
     <Windows>
       
       
@@ -42,9 +42,9 @@
             <Factory>Debug-Log</Factory>
             <Session/>
           </Tab>
-        <Tab><Identity>TabID-10138-3818</Identity><TabName>Ambiguous Definitions</TabName><Factory>Select-Ambiguous-Definitions</Factory><Session/></Tab></Tabs>
+        <Tab><Identity>TabID-10138-3818</Identity><TabName>Ambiguous Definitions</TabName><Factory>Select-Ambiguous-Definitions</Factory><Session/></Tab><Tab><Identity>TabID-12166-28264</Identity><TabName>Find in Files</TabName><Factory>Find-in-Files</Factory><Session/></Tab></Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd0><Wnd1>
+      <SelectedTab>2</SelectedTab></Wnd0><Wnd1>
         <Tabs>
           <Tab>
             <Identity>TabID-19775-15732</Identity>
@@ -62,14 +62,14 @@
       
       
       
-    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\src\net_service.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>134</YPos2><SelStart2>0</SelStart2><SelEnd2>0</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\src\main.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>227</YPos2><SelStart2>37016</SelStart2><SelEnd2>37016</SelEnd2></Tab><ActiveTab>1</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\src\spi.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>36</YPos2><SelStart2>1853</SelStart2><SelEnd2>1853</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\src\Ethernet\W5500\w5500.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>62</YPos2><SelStart2>3052</SelStart2><SelEnd2>3052</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\inc\gemho_GNSS.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>37</SelStart2><SelEnd2>37</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>364</YPos2><SelStart2>11710</SelStart2><SelEnd2>11710</SelEnd2></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\inc\SEE_i2c.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>450</SelStart2><SelEnd2>457</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\src\spi.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>17</YPos2><SelStart2>1245</SelStart2><SelEnd2>1245</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_i2c.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>325</YPos2><SelStart2>13813</SelStart2><SelEnd2>13852</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_i2c.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>1047</YPos2><SelStart2>35798</SelStart2><SelEnd2>35798</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\src\SEE_i2c.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>85</YPos2><SelStart2>4991</SelStart2><SelEnd2>5003</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\src\main.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>321</YPos2><SelStart2>38958</SelStart2><SelEnd2>38958</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\src\Ethernet\wizchip_conf.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>375</YPos2><SelStart2>15288</SelStart2><SelEnd2>15594</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\Program Files (x86)\IAR Systems\Embedded Workbench 7.5\arm\inc\c\stdint.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>635</SelStart2><SelEnd2>643</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\inc\gemho_GNSS.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>63</SelStart2><SelEnd2>74</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\src\net_service.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>26</YPos2><SelStart2>559</SelStart2><SelEnd2>559</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\src\Ethernet\wizchip_conf.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>643</YPos2><SelStart2>20761</SelStart2><SelEnd2>20761</SelEnd2></Tab><ActiveTab>10</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\src\Ethernet\W5500\w5500.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>1283</YPos2><SelStart2>57208</SelStart2><SelEnd2>57208</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\src\Ethernet\W5500\w5500.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>154</YPos2><SelStart2>5656</SelStart2><SelEnd2>5656</SelEnd2></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
     <Positions>
       
       
       
       
       
-    <Top><Row0><Sizes><Toolbar-011BCE48><key>iaridepm.enu1</key></Toolbar-011BCE48></Sizes></Row0><Row1><Sizes/></Row1></Top><Left><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>663</Bottom><Right>328</Right><x>-2</x><y>-2</y><xscreen>189</xscreen><yscreen>189</yscreen><sizeHorzCX>113787</sizeHorzCX><sizeHorzCY>218497</sizeHorzCY><sizeVertCX>198675</sizeVertCX><sizeVertCY>768786</sizeVertCY></Rect></Wnd1></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>154</Bottom><Right>1663</Right><x>-2</x><y>-2</y><xscreen>1665</xscreen><yscreen>156</yscreen><sizeHorzCX>1002408</sizeHorzCX><sizeHorzCY>180347</sizeHorzCY><sizeVertCX>113787</sizeVertCX><sizeVertCY>218497</sizeVertCY></Rect></Wnd0></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+    <Top><Row0><Sizes><Toolbar-0021CE58><key>iaridepm.enu1</key></Toolbar-0021CE58></Sizes></Row0><Row1><Sizes/></Row1></Top><Left><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>703</Bottom><Right>379</Right><x>-2</x><y>-2</y><xscreen>218</xscreen><yscreen>203</yscreen><sizeHorzCX>131246</sizeHorzCX><sizeHorzCY>218986</sizeHorzCY><sizeVertCX>229380</sizeVertCX><sizeVertCY>760518</sizeVertCY></Rect></Wnd1></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>176</Bottom><Right>1663</Right><x>-2</x><y>-2</y><xscreen>1665</xscreen><yscreen>178</yscreen><sizeHorzCX>1002408</sizeHorzCX><sizeHorzCY>192017</sizeHorzCY><sizeVertCX>131246</sizeVertCX><sizeVertCY>218986</sizeVertCY></Rect></Wnd0></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
   </Desktop>
 </Workspace>
 

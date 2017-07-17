@@ -5,7 +5,7 @@
 #include "wizchip_conf.h"
 #include "gemho_GNSS.h"
 
-#define _NETSERVICE_DEBUG_
+//#define _NETSERVICE_DEBUG_
 
 static uint32_t aliveSendMs;
 static uint32_t aliveRcvMs;

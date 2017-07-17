@@ -57,7 +57,7 @@ uint8_t SPI_ReadByte(void)
   */
 void SPI_CrisEnter(void)
 {
-    __set_PRIMASK(1);
+//    __set_PRIMASK(1);
 }
 /**
   * @brief  ÍË³öÁÙ½çÇø
@@ -65,7 +65,7 @@ void SPI_CrisEnter(void)
   */
 void SPI_CrisExit(void)
 {
-    __set_PRIMASK(0);
+//    __set_PRIMASK(0);
 }
  
 /**

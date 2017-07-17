@@ -2030,6 +2030,12 @@
       <name>$PROJ_DIR$\src\net_service.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\src\SEE_i2c.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\inc\SEE_i2c.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\src\spi.c</name>
     </file>
     <file>

@@ -7,6 +7,8 @@
 #include "loopback.h"
 #include "gemho_GNSS.h"
 #include "net_service.h"
+#include "SEE_i2c.h"
+#include <string.h>
 
 
 
@@ -52,12 +54,18 @@ wiz_NetInfo WIZNETINFO = {.mac = {0x00, 0x08, 0xdc,0x00, 0xab, 0x66},
                           .dns = {0,0,0,0},
                           .dhcp = NETINFO_STATIC };
 
+typedef struct tag_gnss_config
+{
+  uint32_t magicnumber;
+  wiz_NetInfo netinfo;
+}gnss_config; 
+
 static __IO uint32_t TimingDelay;
 
-int fputc(int ch, FILE *f)
-{
-  return ch;
-}
+//int fputc(int ch, FILE *f)
+//{
+//  return ch;
+//}
 
 
 void Delay_ms(__IO uint32_t nTime)
@@ -234,10 +242,57 @@ void W5500_config()
 void tick_ms_init()
 {
   if (SysTick_Config(SystemCoreClock / 1000))
-  { 
+  {
     /* Capture error */ 
     while (1);
   }
+}
+
+int save_config(gnss_config *config)
+{
+  int i=0;
+  int ret = 0;
+  uint8_t *pcfg = NULL;
+  
+  config->magicnumber = 0;
+  pcfg = (uint8_t *)config;
+  
+  for(i=0; i<sizeof(*config); i++)
+  {
+    ret = SEE_i2c_write(pcfg[i], i);
+    if(ret != 0)
+      break;
+  }
+  
+  config->magicnumber = MAGICNUMBER;
+  for(i=0; i<sizeof(config->magicnumber); i++)
+  {
+    ret = SEE_i2c_write(pcfg[i], i);
+    if(ret != 0)
+      break;
+  }
+  
+  return ret;
+}
+
+
+int read_config(gnss_config *config)
+{
+  int i=0;
+  int ret = 0;
+  uint8_t *pcfg = NULL;
+  
+  config->magicnumber = 0;
+  pcfg = (uint8_t *)config;
+  
+  for(i=0; i<sizeof(*config); i++)
+  {
+    ret = SEE_i2c_read(&pcfg[i], i);
+    if(ret != 0)
+      break;
+  }
+  
+  return ret;
 }
 
 int main(void)
@@ -249,12 +304,61 @@ int main(void)
   GPIO_Configuration();
   DMA_Configuration();
   tick_ms_init();
+  
+  SEE_i2c_init();
+  
+//  uint8_t buf[128] = "";
+//  uint8_t i = 0;
+//  uint32_t ret = 0;
+//  
+//  for(i=0; i<128; i++)
+//  {
+//    ret = SEE_i2c_write(i, i);
+//    if(ret != 0)
+//      printf("err:%d\n", ret);
+//  }
+//  
+//  for(i=0; i<128; i++)
+//  {
+//    ret = SEE_i2c_read(&buf[i], i);
+//    if(ret != 0)
+//      printf("err:%d\n", ret);
+//    else
+//      printf("%d\n", buf[i]);
+//  }
+  
+
+  
   USART_GPS_init(9600);
   USART_GSP_start();
   USART_GPS_init(115200);
   W5500_config();
   
-  network_init(&WIZNETINFO);
+  gnss_config cfg;
+  cfg.netinfo = WIZNETINFO;
+  
+//  int ret = 0;
+//  ret = save_config(&cfg);
+//  printf("ret:%d\n", ret);
+  
+  memset(&cfg, 0, sizeof(cfg));
+  if(read_config(&cfg) == 0)
+  {
+    if(cfg.magicnumber == MAGICNUMBER)
+    {
+      network_init(&cfg.netinfo);
+    }
+    else
+    {
+      while(1);
+      network_init(&WIZNETINFO);
+    }
+  }
+  else
+  {
+    while(1);
+    network_init(&WIZNETINFO);
+  }
   
   while(1)
   {
