@@ -1,6 +1,7 @@
 #include "SEE_i2c.h"
 #include "stm32f10x_conf.h"
 #include "stm32f10x.h"
+#include <stdio.h>
 
 __IO uint16_t  sEEAddress = 0;   
 __IO uint32_t  sEETimeout = sEE_LONG_TIMEOUT;   
@@ -65,7 +66,7 @@ uint32_t sEE_WaitEepromStandbyState(void)
     /* Wait for ADDR flag to be set (Slave acknowledged his address) */
     sEETimeout = sEE_LONG_TIMEOUT;
     do
-    {     
+    {
       /* Get the current value of the SR1 register */
       tmpSR1 = sEE_I2C->SR1;
       

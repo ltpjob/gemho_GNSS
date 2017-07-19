@@ -1,3 +1,6 @@
+#ifndef _SEE_I2C_H_
+#define _SEE_I2C_H_
+
 #include "stm32f10x_conf.h"
 
 #define I2C_SPEED 200000
@@ -22,3 +25,6 @@ uint32_t SEE_i2c_read(uint8_t* rData, uint16_t ReadAddr);
 void I2C_EE_BufferWrite(u8* pBuffer, u8 WriteAddr, u16 NumByteToWrite);
 
 void I2C_EE_BufferRead(u8* pBuffer, u8 ReadAddr, u16 NumByteToRead);
+
+
+#endif

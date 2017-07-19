@@ -2407,6 +2407,12 @@
       <name>$PROJ_DIR$\inc\gemho_GNSS.h</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\src\gnss_cofig.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\inc\gnss_config.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\src\loopback.c</name>
     </file>
     <file>
@@ -2417,6 +2423,9 @@
     </file>
     <file>
       <name>$PROJ_DIR$\src\net_service.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\inc\net_service.h</name>
     </file>
     <file>
       <name>$PROJ_DIR$\src\SEE_i2c.c</name>

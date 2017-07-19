@@ -38,7 +38,7 @@
         <expressions>
           
           
-        <item>i</item><item>sizeall</item><item>buf</item><item>buf[i]</item><item>rData</item><item>sEETimeout</item><item>c</item><item>*rData</item><item>ReadAddr</item><item>cfg</item><item>WIZNETINFO</item><item></item></expressions>
+        <item>i</item><item>sizeall</item><item>buf</item><item>buf[i]</item><item>rData</item><item>sEETimeout</item><item>c</item><item>*rData</item><item>ReadAddr</item><item>cfg</item><item>WIZNETINFO</item><item/></expressions>
         <col-names>
           
           

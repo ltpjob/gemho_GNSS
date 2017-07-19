@@ -1,7 +1,11 @@
+#ifndef _GEMHO_GNSS_H_
+#define _GEMHO_GNSS_H_
+
+
 #include "wizchip_conf.h"
+#include "stm32f10x_conf.h"
 
 #define RXBUFFERSIZE 256
-#define MAGICNUMBER 0x56585759
 
 extern uint8_t RXBuffer0[RXBUFFERSIZE];
 extern uint8_t RXBuffer1[RXBUFFERSIZE];
@@ -11,3 +15,4 @@ extern wiz_NetInfo gWIZNETINFO;
 
 
 
+#endif

@@ -9,7 +9,8 @@
 #include "net_service.h"
 #include "SEE_i2c.h"
 #include <string.h>
-
+#include "gnss_config.h"
+#include "net_service.h"
 
 
 uint8_t RXBuffer0[RXBUFFERSIZE];
@@ -54,11 +55,7 @@ wiz_NetInfo WIZNETINFO = {.mac = {0x00, 0x08, 0xdc,0x00, 0xab, 0x66},
                           .dns = {0,0,0,0},
                           .dhcp = NETINFO_STATIC };
 
-typedef struct tag_gnss_config
-{
-  uint32_t magicnumber;
-  wiz_NetInfo netinfo;
-}gnss_config; 
+
 
 static __IO uint32_t TimingDelay;
 
@@ -248,53 +245,6 @@ void tick_ms_init()
   }
 }
 
-int save_config(gnss_config *config)
-{
-  int i=0;
-  int ret = 0;
-  uint8_t *pcfg = NULL;
-  
-  config->magicnumber = 0;
-  pcfg = (uint8_t *)config;
-  
-  for(i=0; i<sizeof(*config); i++)
-  {
-    ret = SEE_i2c_write(pcfg[i], i);
-    if(ret != 0)
-      break;
-  }
-  
-  config->magicnumber = MAGICNUMBER;
-  for(i=0; i<sizeof(config->magicnumber); i++)
-  {
-    ret = SEE_i2c_write(pcfg[i], i);
-    if(ret != 0)
-      break;
-  }
-  
-  return ret;
-}
-
-
-int read_config(gnss_config *config)
-{
-  int i=0;
-  int ret = 0;
-  uint8_t *pcfg = NULL;
-  
-  config->magicnumber = 0;
-  pcfg = (uint8_t *)config;
-  
-  for(i=0; i<sizeof(*config); i++)
-  {
-    ret = SEE_i2c_read(&pcfg[i], i);
-    if(ret != 0)
-      break;
-  }
-  
-  return ret;
-}
-
 int main(void)
 {
   SystemInit();
@@ -350,13 +300,13 @@ int main(void)
     }
     else
     {
-      while(1);
+//      while(1);
       network_init(&WIZNETINFO);
     }
   }
   else
   {
-    while(1);
+//    while(1);
     network_init(&WIZNETINFO);
   }
   
@@ -370,7 +320,7 @@ int main(void)
 void TimingDelay_Decrement(void)
 {
   if (TimingDelay != 0x00)
-  { 
+  {
     TimingDelay--;
   }
 }

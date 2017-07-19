@@ -1,11 +1,9 @@
 #include "stm32f10x.h"
 #include <stdio.h>
-#include "loopback.h"
 #include "socket.h"
 #include "wizchip_conf.h"
 #include "gemho_GNSS.h"
-
-//#define _NETSERVICE_DEBUG_
+#include "net_service.h"
 
 static uint32_t aliveSendMs;
 static uint32_t aliveRcvMs;
