@@ -48,8 +48,8 @@ uint8_t GPSInitCmd_satellite[] = {0xB5, 0x62, 0x06, 0x3E, 0x34, 0x00, 0x00, 0x00
 __IO uint8_t g_using_buf0 = 1;
 __IO uint8_t g_recv_flag = 0;
 
-wiz_NetInfo WIZNETINFO = {.mac = {0x00, 0x08, 0xdc,0x00, 0xab, 0x66},
-                          .ip = {192, 168, 88, 6},
+wiz_NetInfo WIZNETINFO = {.mac = {0x00, 0x08, 0xdc,0x00, 0xab, 0x99},
+                          .ip = {192, 168, 88, 99},
                           .sn = {255,255,255,0},
                           .gw = {192, 168, 88, 1},
                           .dns = {0,0,0,0},
@@ -59,10 +59,10 @@ wiz_NetInfo WIZNETINFO = {.mac = {0x00, 0x08, 0xdc,0x00, 0xab, 0x66},
 
 static __IO uint32_t TimingDelay;
 
-//int fputc(int ch, FILE *f)
-//{
-//  return ch;
-//}
+int fputc(int ch, FILE *f)
+{
+  return ch;
+}
 
 
 void Delay_ms(__IO uint32_t nTime)
