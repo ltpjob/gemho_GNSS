@@ -11,6 +11,8 @@
 #include <string.h>
 #include "gnss_config.h"
 #include "net_service.h"
+#include "crc32.h"
+#include "loopback.h"
 
 
 uint8_t RXBuffer0[RXBUFFERSIZE];
@@ -49,7 +51,7 @@ __IO uint8_t g_using_buf0 = 1;
 __IO uint8_t g_recv_flag = 0;
 
 wiz_NetInfo WIZNETINFO = {.mac = {0x00, 0x08, 0xdc,0x00, 0xab, 0x99},
-                          .ip = {192, 168, 88, 99},
+                          .ip = {192, 168, 9, 99},
                           .sn = {255,255,255,0},
                           .gw = {192, 168, 88, 1},
                           .dns = {0,0,0,0},
@@ -58,11 +60,11 @@ wiz_NetInfo WIZNETINFO = {.mac = {0x00, 0x08, 0xdc,0x00, 0xab, 0x99},
 
 
 static __IO uint32_t TimingDelay;
-
-int fputc(int ch, FILE *f)
-{
-  return ch;
-}
+//
+//int fputc(int ch, FILE *f)
+//{
+//  return ch;
+//}
 
 
 void Delay_ms(__IO uint32_t nTime)
@@ -245,8 +247,28 @@ void tick_ms_init()
   }
 }
 
+int init_wizNI()
+{
+  uint32_t cpuid[3];
+  uint32_t crc = 0;
+  
+  cpuid[0]=*(vu32*)(0x1ffff7e8);
+  cpuid[1]=*(vu32*)(0x1ffff7ec);
+  cpuid[2]=*(vu32*)(0x1ffff7f0);
+  
+  crc = get_crc32(0, (uint8_t *)cpuid, sizeof(cpuid));
+  WIZNETINFO.mac[5] = ((uint8_t *)(&crc))[0];
+  WIZNETINFO.mac[4] = ((uint8_t *)(&crc))[1];
+  WIZNETINFO.mac[3] = ((uint8_t *)(&crc))[2];
+  WIZNETINFO.mac[2] = ((uint8_t *)(&crc))[3];
+  
+  return 0;
+}
+
 int main(void)
 {
+
+  
   SystemInit();
   
   RCC_Configuration();
@@ -279,19 +301,21 @@ int main(void)
   
 
   
-  USART_GPS_init(9600);
-  USART_GSP_start();
-  USART_GPS_init(115200);
+//  USART_GPS_init(9600);
+//  USART_GSP_start();
+//  USART_GPS_init(115200);
   W5500_config();
+  wizchip_sw_reset();
   
   gnss_config cfg;
-  cfg.netinfo = WIZNETINFO;
-  
+//  cfg.netinfo = WIZNETINFO;
 //  int ret = 0;
 //  ret = save_config(&cfg);
 //  printf("ret:%d\n", ret);
   
   memset(&cfg, 0, sizeof(cfg));
+  init_wizNI();
+  
   if(read_config(&cfg) == 0)
   {
     if(cfg.magicnumber == MAGICNUMBER)
@@ -312,8 +336,9 @@ int main(void)
   
   while(1)
   {
+//    uint8_t buf[256] = "";
     net_service();
-    
+    lookup_config();
   }
 }
 

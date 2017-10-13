@@ -2404,6 +2404,12 @@
   <group>
     <name>User</name>
     <file>
+      <name>$PROJ_DIR$\src\crc32.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\inc\crc32.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\inc\gemho_GNSS.h</name>
     </file>
     <file>
