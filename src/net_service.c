@@ -294,6 +294,7 @@ int32_t net_service()
   case SOCK_ESTABLISHED :
     if(getSn_IR(sn) & Sn_IR_CON)
     {
+      led_comm_set(1);
 #ifdef _NETSERVICE_DEBUG_
       getSn_DIPR(sn, destip);
       destport = getSn_DPORT(sn);
@@ -308,6 +309,7 @@ int32_t net_service()
     if(aliveRcvMs >= 10*1000)
     {
       close(sn);
+      led_comm_set(0);
       return -1;
     }
     
@@ -436,6 +438,7 @@ int32_t net_service()
 #ifdef _NETSERVICE_DEBUG_
     printf("%d:CloseWait\r\n",sn);
 #endif
+    led_comm_set(0);
     if((ret = disconnect(sn)) != SOCK_OK) return ret;
 #ifdef _NETSERVICE_DEBUG_
     printf("%d:Socket Closed\r\n", sn);
@@ -451,6 +454,7 @@ int32_t net_service()
 #ifdef _NETSERVICE_DEBUG_
     printf("%d:TCP server loopback start\r\n",sn);
 #endif
+    led_comm_set(0);
     if((ret = socket(sn, Sn_MR_TCP, port, 0x00)) != sn) return ret;
 #ifdef _NETSERVICE_DEBUG_
     printf("%d:Socket opened\r\n",sn);

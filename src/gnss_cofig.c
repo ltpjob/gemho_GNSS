@@ -49,4 +49,14 @@ int read_config(gnss_config *config)
   return ret;
 }
 
-
+int led_comm_set(int status)
+{
+  if(status == 0)
+  {
+    GPIO_ResetBits(GPIOC, GPIO_Pin_15);
+  }
+  else
+  {
+    GPIO_SetBits(GPIOC, GPIO_Pin_15);
+  }
+}

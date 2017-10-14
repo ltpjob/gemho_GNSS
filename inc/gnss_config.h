@@ -18,5 +18,7 @@ int save_config(gnss_config *config);
 
 int read_config(gnss_config *config);
 
+int led_comm_set(int status);
+
 
 #endif

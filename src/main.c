@@ -51,7 +51,7 @@ __IO uint8_t g_using_buf0 = 1;
 __IO uint8_t g_recv_flag = 0;
 
 wiz_NetInfo WIZNETINFO = {.mac = {0x00, 0x08, 0xdc,0x00, 0xab, 0x99},
-                          .ip = {192, 168, 9, 99},
+                          .ip = {192, 168, 88, 5},
                           .sn = {255,255,255,0},
                           .gw = {192, 168, 88, 1},
                           .dns = {0,0,0,0},
@@ -74,6 +74,15 @@ void Delay_ms(__IO uint32_t nTime)
   while(TimingDelay != 0);
 }
 
+void loop_ms(u16 time)
+{    
+   u16 i=0;  
+   while(time--)
+   {
+      i=8000;  //自己定义
+      while(i--) ;    
+   }
+}
 
 void RCC_Configuration(void)
 {
@@ -81,7 +90,7 @@ void RCC_Configuration(void)
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
   
   /* Enable GPIO clock */
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB |RCC_APB2Periph_USART1 | RCC_APB2Periph_AFIO, ENABLE);
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_USART1 | RCC_APB2Periph_AFIO, ENABLE);
   
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2 | RCC_APB1Periph_I2C2, ENABLE);
   
@@ -123,6 +132,26 @@ void GPIO_Configuration(void)
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
   GPIO_Init(GPIOB, &GPIO_InitStructure);
+  
+  
+  //led R G Y
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+  GPIO_Init(GPIOC, &GPIO_InitStructure);
+  
+  //led rst
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+  GPIO_Init(GPIOB, &GPIO_InitStructure);
+  
+  //int rst
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+  GPIO_Init(GPIOB, &GPIO_InitStructure);
+  
 }
 
 void NVIC_Configuration(void)
@@ -133,6 +162,28 @@ void NVIC_Configuration(void)
   
   NVIC_InitStructure.NVIC_IRQChannel = DMA1_Channel5_IRQn;   
   NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2; 
+  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+  NVIC_Init(&NVIC_InitStructure);
+}
+
+void RST_Configuration(void)
+{
+  NVIC_InitTypeDef NVIC_InitStructure;
+  EXTI_InitTypeDef   EXTI_InitStructure;
+  
+  GPIO_EXTILineConfig(GPIO_PortSourceGPIOB, GPIO_PinSource4);
+
+  /* Configure EXTI0 line */
+  EXTI_InitStructure.EXTI_Line = EXTI_Line4;
+  EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;  
+  EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+  EXTI_Init(&EXTI_InitStructure);
+
+  /* Enable and set EXTI0 Interrupt to the lowest priority */
+  NVIC_InitStructure.NVIC_IRQChannel = EXTI4_IRQn;
+  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;
   NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure);
@@ -299,11 +350,25 @@ int main(void)
 //      printf("%d\n", buf[i]);
 //  }
   
-
+//  while(1)
+//  {
+//    GPIO_SetBits(GPIOC, GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15);
+//    GPIO_SetBits(GPIOB, GPIO_Pin_6);
+//    Delay_ms(1000);
+//    GPIO_ResetBits(GPIOC, GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15);
+//    GPIO_ResetBits(GPIOB, GPIO_Pin_6);
+//    Delay_ms(1000);
+//  }
   
-//  USART_GPS_init(9600);
-//  USART_GSP_start();
-//  USART_GPS_init(115200);
+//  GPIO_SetBits(GPIOC, GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15);
+//  Delay_ms(3000);
+//  int *p = 0;
+//  *p = 1;
+//  while(1);
+  
+  USART_GPS_init(9600);
+  USART_GSP_start();
+  USART_GPS_init(115200);
   W5500_config();
   wizchip_sw_reset();
   
@@ -334,6 +399,8 @@ int main(void)
     network_init(&WIZNETINFO);
   }
   
+  RST_Configuration();
+  
   while(1)
   {
 //    uint8_t buf[256] = "";
@@ -359,6 +426,17 @@ void SysTick_Handler(void)
 {
   network_aliveTick();
   TimingDelay_Decrement();
+  
+  static unsigned flag = 0;
+  flag++;
+  if(flag%100 == 0)
+  {
+    GPIO_ResetBits(GPIOC, GPIO_Pin_14);
+  }
+  else if(flag%100 == 1)
+  {
+    GPIO_SetBits(GPIOC, GPIO_Pin_14);
+  }
 }
 
 void DMA1_Channel5_IRQHandler(void)
@@ -376,8 +454,34 @@ void DMA1_Channel5_IRQHandler(void)
       g_using_buf0 = 0;
     }
     
+    GPIO_SetBits(GPIOC, GPIO_Pin_13);
+    
     g_recv_flag++;
     
     DMA_ClearITPendingBit(DMA1_IT_TC5);
+  }
+}
+
+void EXTI4_IRQHandler(void)
+{
+  if(EXTI_GetITStatus(EXTI_Line4) != RESET)
+  { 
+    gnss_config cfg;
+    int count = 16;
+    cfg.netinfo = WIZNETINFO;
+    if(save_config(&cfg) == 0)
+    {
+      network_init(&cfg.netinfo);
+      while(count--)
+      {
+        GPIO_SetBits(GPIOB, GPIO_Pin_6);
+        loop_ms(100);
+        GPIO_ResetBits(GPIOB, GPIO_Pin_6);
+        loop_ms(100);
+      }
+    }
+   
+    /* Clear the  EXTI line 0 pending bit */
+    EXTI_ClearITPendingBit(EXTI_Line4);
   }
 }
