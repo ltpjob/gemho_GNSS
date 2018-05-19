@@ -51,7 +51,7 @@ __IO uint8_t g_using_buf0 = 1;
 __IO uint8_t g_recv_flag = 0;
 
 wiz_NetInfo WIZNETINFO = {.mac = {0x00, 0x08, 0xdc,0x00, 0xab, 0x99},
-                          .ip = {192, 168, 88, 5},
+                          .ip = {192, 168, 88, 6},
                           .sn = {255,255,255,0},
                           .gw = {192, 168, 88, 1},
                           .dns = {0,0,0,0},
@@ -245,7 +245,7 @@ void USART_GSP_start()
   }
   
   for(i=0; i<sizeof(GPSInitCmd_rtk); i++)
-  {   
+  {
     USART_SendData(USART1,GPSInitCmd_rtk[i]);
     while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET){}
   }
